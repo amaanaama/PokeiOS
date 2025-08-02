@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		994054572E3DAD2900572709 /* PokemonAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 994054562E3DAD2900572709 /* PokemonAPI */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		994054382E3D73A900572709 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				994054572E3DAD2900572709 /* PokemonAPI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +130,7 @@
 			);
 			name = PokeiOS;
 			packageProductDependencies = (
+				994054562E3DAD2900572709 /* PokemonAPI */,
 			);
 			productName = PokeiOS;
 			productReference = 994054262E3D73A800572709 /* PokeiOS.app */;
@@ -208,6 +214,9 @@
 			);
 			mainGroup = 9940541D2E3D73A800572709;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				994054552E3DAD2900572709 /* XCLocalSwiftPackageReference "../../Downloads/PokemonAPI-7.0.3" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 994054272E3D73A800572709 /* Products */;
 			projectDirPath = "";
@@ -595,6 +604,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		994054552E3DAD2900572709 /* XCLocalSwiftPackageReference "../../Downloads/PokemonAPI-7.0.3" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../../Downloads/PokemonAPI-7.0.3";
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		994054562E3DAD2900572709 /* PokemonAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PokemonAPI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9940541E2E3D73A800572709 /* Project object */;
 }

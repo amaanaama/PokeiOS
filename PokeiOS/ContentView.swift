@@ -7,50 +7,47 @@
 
 import SwiftUI
 import SwiftData
+import PokemonAPI
+
+let pokemonAPI = PokemonAPI()
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @State private var berryNames: [String] = []
+    @State private var errorMessage: String?
 
     var body: some View {
-        NavigationSplitView {
+        NavigationView {
             List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
-                }
-                .onDelete(perform: deleteItems)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
+                if let error = errorMessage {
+                    Text("Error: \(error)")
+                        .foregroundColor(.red)
+                } else if berryNames.isEmpty {
+                    Text("Loading...")
+                } else {
+                    ForEach(berryNames, id: \.self) { name in
+                        Text(name)
                     }
                 }
             }
-        } detail: {
-            Text("Select an item")
+            .navigationTitle("Berries")
+        }
+        .task {
+            await fetchBerries()
         }
     }
 
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
+    func fetchBerries() async {
+        do {
+            var names: [String] = []
+            for id in 1...10 {
+                let berry = try await PokemonAPI().berryService.fetchBerry(id)
+                if let name = berry.name {
+                    names.append(name.capitalized)
+                }
             }
+            berryNames = names
+        } catch {
+            errorMessage = error.localizedDescription
         }
     }
 }
