@@ -17,7 +17,7 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView {
-            List {
+            VStack(alignment: .leading, spacing: 10) {
                 if let error = errorMessage {
                     Text("Error: \(error)")
                         .foregroundColor(.red)
@@ -25,7 +25,9 @@ struct ContentView: View {
                     Text("Loading...")
                 } else {
                     ForEach(berryNames, id: \.self) { name in
-                        Text(name)
+                        NavigationLink(name){
+                            Text(name)
+                        }
                     }
                 }
             }
