@@ -10,20 +10,20 @@ import SwiftData
 import PokemonAPI
 
 let pokemonAPI = PokemonAPI()
-@MainActor private var berryNames: [String] = []
+@MainActor private var pokemonNames: [String] = []
 @MainActor private var errorMessage: String?
 
 @MainActor
-func fetchBerries() async {
+func fetchPokemon() async {
     do {
         var names: [String] = []
-        for id in 1...10 {
-            let berry = try await PokemonAPI().berryService.fetchBerry(id)
-            if let name = berry.name {
+        for id in 1...50 {
+            let pokemon = try await PokemonAPI().pokemonService.fetchPokemon(id)
+            if let name = pokemon.name {
                 names.append(name.capitalized)
             }
         }
-        berryNames = names
+        pokemonNames = names
     } catch {
         errorMessage = error.localizedDescription
     }
@@ -32,27 +32,27 @@ func fetchBerries() async {
 struct ContentView: View {
 
     let columns = [
-        GridItem(.flexible(), spacing: 16),
-        GridItem(.flexible(), spacing: 16),
+        GridItem(.flexible(), spacing: 12),
+        GridItem(.flexible(), spacing: 12),
     ]
 
-    @State private var berryNames: [String] = []
+    @State private var pokemonNames: [String] = []
     @State private var errorMessage: String?
 
     var body: some View {
         NavigationView {
             ScrollView {
-                LazyVGrid(columns: columns, spacing: 16) {
+                LazyVGrid(columns: columns, spacing: 12) {
                     if let error = errorMessage {
                         Text("Error: \(error)")
                             .foregroundColor(.red)
-                    } else if berryNames.isEmpty {
+                    } else if pokemonNames.isEmpty {
                         Text("Loading...")
                     } else {
-                        ForEach(berryNames, id: \.self) { name in
+                        ForEach(pokemonNames, id: \.self) { name in
                             NavigationLink(destination: DetailView(name: name)) {
                                 RoundedRectangle(cornerRadius: 12)
-                                    .frame(width: 200, height: 50)
+                                    .frame(width: 165, height: 75)
                                     .glassEffect(in: .rect(cornerRadius: 12))
                                 
                                     .overlay(
@@ -65,25 +65,25 @@ struct ContentView: View {
                         }
                     }
                 }
-                .navigationTitle("Berries")
+                .navigationTitle("Pokemon")
             }
         }
         .task {
-            await loadBerries()
+            await loadPokemon()
         }
     }
 
     @MainActor
-    func loadBerries() async {
+    func loadPokemon() async {
         do {
             var names: [String] = []
-            for id in 1...10 {
-                let berry = try await PokemonAPI().berryService.fetchBerry(id)
-                if let name = berry.name {
+            for id in 1...50 {
+                let pokemon = try await PokemonAPI().pokemonService.fetchPokemon(id)
+                if let name = pokemon.name {
                     names.append(name.capitalized)
                 }
             }
-            berryNames = names
+            pokemonNames = names
         } catch {
             errorMessage = error.localizedDescription
         }
